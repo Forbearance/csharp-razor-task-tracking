@@ -3,17 +3,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Tasker.Pages
 {
-    public class CreateTaskModel : PageModel
+  public class CreateTaskModel : PageModel
+  {
+    private ApplicationDbContext _context;
+
+    public CreateTaskModel(ApplicationDbContext context)
     {
-        public void OnGet()
-        {
-        }
+      _context = context;
+    }
+
+    public void OnGet()
+    {
+    }
 
     [BindProperty]
     public Task NewTask { get; set; }
 
     public IActionResult OnPost()
     {
+      _context.Tasks.Add(NewTask);
+      _context.SaveChanges();
+
       return RedirectToPage("Index");
     }
   }
